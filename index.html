@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postal Days Off Color Code</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #color {
+            font-size: 2em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Postal Days Off Color Code</h1>
+<p id="color">Calculating...</p>
+
+<script>
+    // Wrap your code in a function to avoid global scope issues
+    (function() {
+        // Define the sequence of colors
+        const colorSequence = ["Red", "Black", "Yellow", "Blue", "Green", "Brown"];
+
+        // Define the first date (January 1, 2024)
+        const firstDate = new Date('2024-01-01');
+
+        // Get today's date
+        const currentDate = new Date();
+
+        // Calculate the difference in days between the current date and the first date
+        let daysDifference = Math.floor((currentDate - firstDate) / (1000 * 60 * 60 * 24));
+
+        // Handle dates before the first date
+        if (daysDifference < 0) {
+            daysDifference = Math.abs(daysDifference);
+        }
+
+        // Calculate the current day of the week (0=Sunday, 1=Monday, ..., 6=Saturday)
+        let currentDayOfWeek = currentDate.getDay();
+
+        // If it's Sunday, display "Sunday" immediately
+        if (currentDayOfWeek === 0) {
+            document.getElementById("color").textContent = "Today's Color: Sunday";
+        } else {
+            // If it's Saturday (6), treat it like Friday (5)
+            if (currentDayOfWeek === 6) {
+                currentDayOfWeek = 5;
+            }
+
+            // Calculate the difference in weeks
+            const weeksDifference = Math.floor(daysDifference / 7);
+
+            // Calculate the modulus of the weeks to cycle through the colors (mod 6 because 6 colors)
+            const weekModulus = weeksDifference % 6;
+
+            // Calculate the modulus for the days (mod 5 for weekdays, excluding Saturday and Sunday)
+            const daysModulus = (currentDayOfWeek - 1) % 5;
+
+            // Calculate the final color index
+            const finalIndex = (weekModulus + daysModulus) % 6;
+
+            // Get the color for today
+            const todayColor = colorSequence[finalIndex];
+
+            // Display the result
+            document.getElementById("color").textContent = `Today's Color: ${todayColor}`;
+        }
+    })();
+</script>
+
+</body>
+</html>
